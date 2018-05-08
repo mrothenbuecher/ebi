@@ -1,0 +1,24 @@
+<div class="row pos">
+  <div class="col-1">
+    <input name="pos" type="text" class="form-control" placeholder="Pos" value="{{pos}}">
+    <a href="#" class="btn remove-row">
+      <span aria-hidden="true">&times;</span>
+    </a>
+  </div>
+  <div class="col-5">
+    <textarea rows="3" name="desc" type="text" class="form-control" placeholder="Beschreibung">{{desc}}</textarea>
+  </div>
+  <div class="col-2">
+    <input name="amount" type="number" class="form-control float-left" placeholder="Menge" value="{{amount}}">
+    <input name="unit" type="text" class="form-control float-left" placeholder="Einheit" value="{{unit}}">
+  </div>
+  <div class="col-2">
+    <input name="price" type="number" class="form-control" placeholder="Preis" value="{{price}}">
+  </div>
+  <div class="col-2 value">
+    <span>{{value}}</span>
+  </div>
+  <div class="col-12">
+    <hr/>
+  </div>
+</div>

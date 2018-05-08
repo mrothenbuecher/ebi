@@ -1,0 +1,70 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+  <style>
+   * {
+     font-family: 'Roboto Slab', serif;
+   }
+  </style>
+</head>
+
+<body>
+
+  <h1 style="float:left;display:inline;">{{type}} {{number}}</h1>
+  <div style="float:right;display:inline;">{{date}}</div>
+  <div style="clear:both;"></div>
+  <p>{{{starttext_html}}}</p>
+  <table style="width: 100%;">
+    <thead>
+      <tr>
+        <th style="text-align:left">Pos.</th>
+        <th style="text-align:left">Beschreibung</th>
+        <th style="text-align:center">Menge</th>
+        <th style="text-align:right">Preis</th>
+        <th style="text-align:right">Wert</th>
+      </tr>
+    </thead>
+    <tfoot>
+      <tr>
+        <td colspan="4" style="text-align:right">Summe: </td>
+        <td style="text-align:right">{{sum}} €</td>
+      </tr>
+      <tr>
+        <td colspan="4" style="text-align:right">MwSt.(19%): </td>
+        <td style="text-align:right">{{tax}} €</td>
+      </tr>
+      <tr>
+        <td colspan="4" style="text-align:right">Gesamtwert: </td>
+        <td style="text-align:right">{{final}} €</td>
+      </tr>
+    </tfoot>
+    <tbody>
+      {{#positions}}
+        <tr>
+          <td style="text-align:left">{{pos}}</td>
+          <td style="text-align:left">{{{desc_html}}}</td>
+          <td style="text-align:center">{{amount}} {{unit}}</td>
+          <td style="text-align:right">{{price}} €</td>
+          <td style="text-align:right">{{sum}} €</td>
+        </tr>
+      {{/positions}}
+    </tbody>
+  </table>
+  <div style="clear:both;"></div>
+  <p>{{{endtext_html}}}</p>
+  <div style="clear:both;"></div>
+  <p>Mit freundlichen Gr&uuml;&szlig;en<br/><br/><br/><br/><br/>Eberhard Rothenb&uuml;cher</p>
+  <div id="pageHeader-first">
+    {{customer.name}}
+  </div>
+  <div id="pageFooter">
+    <p>IBAN: </p>
+    <p>BIC: </p>
+  </div>
+</body>
+
+</html>

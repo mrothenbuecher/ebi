@@ -1,0 +1,129 @@
+<!-- views/customer.ejs -->
+<div class="row">
+  <div class="col-12">
+    <h2 class="float-left">Kunden</h2><button class="btn btn-default float-left add_customer">+</button>
+  </div>
+</div>
+<%  if(customers && customers.length > 0){ %>
+  <div class="row">
+    <%  customers.forEach(function(customer) { %>
+      <div class="col-sm-auto col-md-auto col-lg-auto col-xl-auto">
+        <div class="card" style="width: 18rem;">
+          <div class="card-body" data-id="<%= customer._id %>">
+            <h5 class="card-title"><%= customer.name %></h5>
+            <h6 class="card-subtitle mb-2 text-muted"><%= customer.street %> <%= customer.town %></h6>
+            <a href="#" class="btn btn-primary edit_customer">ändern</a>
+            <a href="#" class="btn btn-danger delete_customer">löschen</a>
+          </div>
+        </div>
+      </div>
+      <% });%>
+  </div>
+  <% }else { %>
+    <div class="row">
+      <div class="col-12">
+        <div class="alert alert-primary" role="alert">
+          Es gibt noch keine Kunden, du solltest einen Kunden <a href="#" class="alert-link add_customer">anlegen.</a>
+        </div>
+      </div>
+    </div>
+    <% } %>
+      <div class="modal fade" id="customermodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="customerModalLabel">Customer title</h5>
+              <a href="#" class="btn close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </a>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div style="display: none;">
+                  <input type="text" class="data" id="_id">
+                </div>
+                <div class="form-group">
+                  <label for="formGroupExampleInput">Name</label>
+                  <input type="text" class="form-control data" id="name" placeholder="Name">
+                </div>
+                <div class="form-group">
+                  <label for="formGroupExampleInput2">Straße</label>
+                  <input type="text" class="form-control data" id="street" placeholder="Straße">
+                </div>
+                <div class="form-group">
+                  <label for="formGroupExampleInput2">PLZ</label>
+                  <input type="text" class="form-control data" id="zip" placeholder="PLZ">
+                </div>
+                <div class="form-group">
+                  <label for="formGroupExampleInput2">Ort</label>
+                  <input type="text" class="form-control data" id="town" placeholder="Ort">
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <a href="#" class="btn btn-secondary" data-dismiss="modal">verwerfen</a>
+              <a href="#" id="save_customer" class="btn btn-primary">speichern</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script>
+        (function() {
+          $(document).ready(function() {
+
+            $('.add_customer').click(function(ev) {
+              ev.preventDefault();
+              $('#customerModalLabel').text("Kunde anlegen");
+              $('#customermodal :input').val("");
+              $('#customermodal').modal('toggle');
+            });
+
+            $('.edit_customer').click(function(ev) {
+              ev.preventDefault();
+              $('#customerModalLabel').text("Kunde ändern");
+              $('#customermodal :input').val("");
+
+              var id = $(this).parent().data("id");
+
+              $.getJSON("/customer/" + id, function(data) {
+                  $('#customermodal :input.data').each(function(i, val) {
+                    $(val).val(data[$(val).attr("id")]);
+                  });
+                  $('#customermodal').modal('toggle');
+                })
+                .fail(function() {
+                  toastr['error']("konnte Kunden nicht holen")
+                })
+                .always(function() {});
+            });
+
+            $('#save_customer').click(function(ev) {
+              ev.preventDefault();
+              var customer = {};
+              $('#customermodal :input.data').each(function(i, val) {
+                customer[$(val).attr("id")] = $(val).val();
+              });
+              $.post('/customer', customer, function() {}).done(function() {
+                toastr["info"]("gespeichert");
+              }).fail(function() {
+                toastr["error"]("speichern fehlgeschlagen");
+              }).always(function() {
+                $('#customermodal').modal('hide');
+              });
+            });
+
+            $('.delete_customer').click(function(ev) {
+              ev.preventDefault();
+              var id = $(this).parent().data("id");
+              $.ajax({
+                url: "/customer/" + id,
+                type: 'DELETE',
+                success: function(result) {
+                  toastr["info"]("gelöscht");
+                }
+              });
+            });
+
+          });
+        })();
+      </script>

@@ -1,0 +1,317 @@
+<!-- views/dossier.ejs -->
+<div class="row">
+  <div class="col-12">
+    <h2 class="float-left">Vorgänge</h2><button class="btn btn-default float-left add_dossier">+</button>
+  </div>
+</div>
+<%  if(dossiers && dossiers.length > 0){ %>
+  <div class="row">
+    <%  dossiers.forEach(function(dossier) { %>
+      <div class="col-sm-auto col-md-auto col-lg-auto col-xl-auto">
+        <div class="card" style="width: 18rem;">
+          <div class="card-body" data-id="<%= dossier._id %>">
+            <h5 class="card-title"><%= dossier.number %></h5>
+            <h6 class="card-subtitle mb-2 text-muted"><%= dossier.date %> <%= dossier.customer %></h6>
+            <a href="#" class="btn btn-primary edit_dossier">ändern</a>
+            <a href="/dossier/print/<%=dossier._id%>" class="btn btn-success print_dossier">drucken</a>
+            <a href="#" class="btn btn-danger delete_dossier">löschen</a>
+          </div>
+        </div>
+      </div>
+      <% });%>
+  </div>
+  <%} else { %>
+    <div class="row">
+      <div class="col-12">
+        <div class="alert alert-primary" role="alert">
+          Es gibt noch keine Vorgänge, du solltest einen Vorgang <a href="#" class="alert-link add_dossier">anlegen.</a>
+        </div>
+      </div>
+    </div>
+    <% } %>
+      <div class="modal fade" id="dossiermodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="dossierModalLabel">dossier title</h5>
+              <a href="#" class="btn close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </a>
+            </div>
+            <div class="modal-body">
+              <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" data-toggle="tab" href="#dossier-text-tab" role="tab" aria-controls="customer" aria-selected="true">Texte</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" data-toggle="tab" href="#dossier-pos-tab" role="tab" aria-controls="dossier" aria-selected="false">Positionen</a>
+                </li>
+              </ul>
+              <div class="tab-content">
+                <div class="tab-pane show active" id="dossier-text-tab" role="tabpanel">
+                  <form>
+                    <div style="display: none;">
+                      <input type="text" class="data" id="_id">
+                      <input type="text" class="data" id="customer_id">
+                    </div>
+                    <div class="form-group">
+                      <label for="formGroupExampleInput">Vorgangsart</label>
+                      <input type="text" class="form-control data" id="type" placeholder="Angebot / Rechnung">
+                    </div>
+                    <div class="form-group">
+                      <label for="formGroupExampleInput">Kunde</label>
+                      <input type="text" class="form-control data" id="customer" placeholder="Kunde">
+                    </div>
+                    <div class="form-group">
+                      <label for="formGroupExampleInput">Nummer</label>
+                      <input type="text" class="form-control data" id="number" placeholder="Nummer">
+                    </div>
+                    <div class="form-group">
+                      <label for="formGroupExampleInput">Datum</label>
+                      <input type="text" class="form-control data" id="date" placeholder="Datum">
+                    </div>
+                    <div class="form-group">
+                      <label for="formGroupExampleInput">Anfangstext</label>
+                      <textarea rows="5" type="text" class="form-control data" id="starttext" placeholder="Anfangstext"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="formGroupExampleInput">Endtext</label>
+                      <textarea rows="5" type="text" class="form-control data" id="endtext" placeholder="Endtext"></textarea>
+                    </div>
+                  </form>
+                </div>
+                <div class="tab-pane" id="dossier-pos-tab" role="tabpanel">
+                  <div class="row">
+                    <div class="col-1">
+                      <h6>Pos.</h6>
+                    </div>
+                    <div class="col-5">
+                      <h6>Beschreibung</h6>
+                    </div>
+                    <div class="col-2">
+                      <h6>Menge</h6>
+                      <h6>Einheit</h6>
+                    </div>
+                    <div class="col-2">
+                      <h6>Preis</h6>
+                    </div>
+                    <div class="col-2">
+                      <h6>Wert</h6>
+                    </div>
+                  </div>
+                  <div id="dossier-table">
+                  </div>
+                  <div class="row">
+                    <div class="col-2">
+                      <a href="#" class="btn btn-primary" id="add-row">Zeile hinzufügen</a>
+                    </div>
+                    <div class="offset-6 col-2">
+                      <h6 class="float-right">Summe: </h6>
+                    </div>
+                    <div class="col-2">
+                      <input type="text" readonly class="form-control" id="sum">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="offset-8 col-2">
+                      <h6 class="float-right">Mwst.(19 %): </h6>
+                    </div>
+                    <div class="col-2">
+                      <input type="text" readonly class="form-control" id="tax">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="offset-8 col-2">
+                      <h6 class="float-right">Gesamt: </h6>
+                    </div>
+                    <div class="col-2">
+                      <input type="text" readonly class="form-control" id="final">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <a href="#" class="btn btn-secondary" style="margin-right: 80px;" data-dismiss="modal">verwerfen</a>
+              <a href="#" class="btn btn-primary" id="save_dossier">speichern</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script>
+        (function() {
+
+          var template_row;
+          $.get('mst/row.mst', function(template) {
+            template_row = template;
+          });
+
+          function addRow(data) {
+            var rendered = Mustache.render(template_row, data);
+            var foo = $(rendered);
+            foo.find('.remove-row').click(function() {
+              var $this = $(this);
+              $this.parent().parent().remove();
+            });
+            foo.find('input[name="amount"]').change(function() {
+              var $this = $(this);
+              $('#dossiermodal').trigger("price-update", $this);
+            });
+            foo.find('input[name="price"]').change(function() {
+              var $this = $(this);
+              $this.val(formatCurrency($this.val()));
+              $('#dossiermodal').trigger("price-update", $this);
+            });
+            $('#dossier-table').append(foo);
+          }
+
+          function resetTable() {
+            $('#dossier-table').html("");
+            addRow({});
+          }
+
+          function resetModal() {
+            $('#dossiermodal :input').val("");
+            resetTable();
+          }
+
+          function formatCurrency(number){
+            return parseFloat(Math.round(number * 100) / 100).toFixed(2);
+          }
+
+          $(document).ready(function() {
+
+              $('#dossiermodal').on("price-update", function(event, arg1){
+
+                var sum = 0;
+                $('#dossiermodal .pos').each(function(i, val) {
+                  var $row = $(val);
+                  var amountField = $row.find('input[name="amount"]')[0];
+                  var priceField = $row.find('input[name="price"]')[0];
+                  var valueField = $row.find('.value')[0];
+
+                  if(amountField && priceField && valueField){
+                    var price = $(priceField).val();
+                    var amount = $(amountField).val();
+                    if(price && amount){
+                      $(valueField).html("<span>"+formatCurrency(price*amount)+" €</span>");
+                      sum += price*amount;
+                    }else{
+                      $(valueField).html("<span>0 €</span>");
+                    }
+                  }
+                });
+                $('#sum').val(formatCurrency(sum)+ " €");
+                $('#tax').val(formatCurrency((sum*1.19)-sum)+ " €");
+                $('#final').val(formatCurrency(sum*1.19)+ " €");
+              });
+
+            $('.add_dossier').click(function(ev) {
+              ev.preventDefault();
+              $('#dossierModalLabel').text("Vorgang anlegen");
+              resetModal();
+              $('#dossiermodal').modal('toggle');
+            });
+
+            $('.edit_dossier').click(function(ev) {
+              ev.preventDefault();
+              $('#dossierModalLabel').text("Kunde ändern");
+              resetModal();
+              var id = $(this).parent().data("id");
+
+              $.getJSON("/dossier/" + id, function(data) {
+                  $('#dossiermodal :input.data').each(function(i, val) {
+                      $(val).val(data[$(val).attr("id")]);
+                  });
+                  // table reset
+                  if(data.positions && data.positions.length > 0){
+                    $('#dossier-table').html("");
+                    $.each(data.positions, function(i, val){
+                      addRow(val);
+                    });
+                  }
+
+                  $('#dossiermodal').trigger("price-update");
+
+                  $('#dossiermodal').modal('toggle');
+                })
+                .fail(function() {
+                  toastr['error']("konnte Vorgang nicht holen")
+                })
+                .always(function() {});
+            });
+
+            $('.delete_dossier').click(function(ev) {
+              ev.preventDefault();
+              var id = $(this).parent().data("id");
+              $.ajax({
+                url: "/dossier/" + id,
+                type: 'DELETE',
+                success: function(result) {
+                  toastr["info"]("gelöscht");
+                }
+              });
+            });
+
+            $('#save_dossier').click(function(ev) {
+              ev.preventDefault();
+              var dossier = {};
+              $('#dossiermodal :input.data').each(function(i, val) {
+                dossier[$(val).attr("id")] = $(val).val();
+              });
+
+              var positions = [];
+
+              // get all positions from modal
+              $('#dossiermodal .pos').each(function(i, val) {
+                var row = $(val);
+                var data = {};
+                // get all input field from current row
+                row.find(":input").each(function(j, foo){
+                  data[$(foo).attr("name")] = $(foo).val();
+                });
+                positions.push(data);
+                //dossier[$(val).attr("id")] = $(val).val();
+              });
+
+              dossier["positions"] = positions;
+              $.post('/dossier', dossier, function() {}).done(function() {
+                toastr["info"]("gespeichert");
+              }).fail(function() {
+                toastr["error"]("speichern fehlgeschlagen");
+              }).always(function() {
+                $('#dossiermodal').modal('hide');
+              });
+            });
+
+            $('#add-row').click(function(ev) {
+              ev.preventDefault();
+              addRow({});
+            });
+
+
+            $('#customer').typeahead({
+              highlight: true,
+            }, {
+              name: 'brands',
+              display: 'name',
+              source: function(query, syncResults, asyncResults) {
+                $.get('/customers', function(data) {
+                  asyncResults(data);
+                });
+              }
+            });
+
+            $('#customer').on('typeahead:selected', function (e, customer) {
+              if(!customer){
+                $('#customer_id').val("");
+              }else{
+                $('#customer_id').val(customer._id);
+              }
+            });
+
+
+          });
+        })();
+      </script>

@@ -1,0 +1,49 @@
+<!-- views/main.ejs -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="shortcut icon" href="/favicon.ico">
+  <title>ebi</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+  <link href="/css/typeaheadjs.css" rel="stylesheet">
+  <link href="/css/style.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.2.1.js" ></script>
+</head>
+
+<body>
+  <main id="" role="main" class="container-fluid">
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#customer-tab" role="tab" aria-controls="customer" aria-selected="true">Kunden</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#dossier-tab" role="tab" aria-controls="dossier" aria-selected="false">Vorgänge</a>
+      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane show active" id="customer-tab" role="tabpanel" aria-labelledby="customer-tab">
+        <%- include ./partials/customer.ejs %>
+      </div>
+      <div class="tab-pane" id="dossier-tab" role="tabpanel" aria-labelledby="dossier-tab">
+        <%- include ./partials/dossier.ejs %>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" ></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" ></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  <script src="/js/typeahead.bundle.js"></script>
+  <script src="/js/mustache.min.js"></script>
+  <script>
+    $(document).ready(function() {
+
+    });
+  </script>
+
+</body>
+
+</html>
