@@ -1,7 +1,7 @@
 <!-- views/customer.ejs -->
 <div class="row" style="margin-bottom: 20px;">
   <div class="col-12">
-    <h2 class="float-left">Kunden</h2><button style="margin-left: 10px;" class="btn float-left add_customer"><i class="fas fa-plus"></i></button>
+    <h2 class="float-left"><%= config.lang.customers %></h2><button style="margin-left: 10px;" class="btn float-left add_customer"><i class="fas fa-plus"></i></button>
   </div>
 </div>
 <%  if(customers && customers.length > 0){ %>
@@ -23,7 +23,7 @@
     <div class="row">
       <div class="col-12">
         <div class="alert alert-primary" role="alert">
-          Es gibt noch keine Kunden, du solltest einen Kunden <a href="#" class="alert-link add_customer">anlegen.</a>
+          <%- config.lang.info_customer %>
         </div>
       </div>
     </div>
@@ -43,20 +43,20 @@
                   <input type="text" class="data" id="_id">
                 </div>
                 <div class="form-group">
-                  <label for="formGroupExampleInput">Name</label>
-                  <input type="text" class="form-control data" id="name" placeholder="Name">
+                  <label for="formGroupExampleInput"><%= config.lang.name %></label>
+                  <input type="text" class="form-control data" id="name" placeholder="<%= config.lang.name %>">
                 </div>
                 <div class="form-group">
-                  <label for="formGroupExampleInput2">Straße</label>
-                  <input type="text" class="form-control data" id="street" placeholder="Straße">
+                  <label for="formGroupExampleInput2"><%= config.lang.street %></label>
+                  <input type="text" class="form-control data" id="street" placeholder="<%= config.lang.street %>">
                 </div>
                 <div class="form-group">
-                  <label for="formGroupExampleInput2">PLZ</label>
-                  <input type="text" class="form-control data" id="zip" placeholder="PLZ">
+                  <label for="formGroupExampleInput2"><%= config.lang.zipcode %></label>
+                  <input type="text" class="form-control data" id="zip" placeholder="<%= config.lang.zipcode %>">
                 </div>
                 <div class="form-group">
-                  <label for="formGroupExampleInput2">Ort</label>
-                  <input type="text" class="form-control data" id="town" placeholder="Ort">
+                  <label for="formGroupExampleInput2"><%= config.lang.town %></label>
+                  <input type="text" class="form-control data" id="town" placeholder="<%= config.lang.name %>">
                 </div>
               </form>
             </div>
@@ -73,14 +73,14 @@
 
             $('.add_customer').click(function(ev) {
               ev.preventDefault();
-              $('#customerModalLabel').text("Kunde anlegen");
+              $('#customerModalLabel').text(lang.create_customer);
               $('#customermodal :input').val("");
               $('#customermodal').modal('toggle');
             });
 
             $('.edit_customer').click(function(ev) {
               ev.preventDefault();
-              $('#customerModalLabel').text("Kunde ändern");
+              $('#customerModalLabel').text(lang.edit_customer);
               $('#customermodal :input').val("");
 
               var id = $(this).parent().data("id");
@@ -104,11 +104,13 @@
                 customer[$(val).attr("id")] = $(val).val();
               });
               $.post('/customer', customer, function() {}).done(function() {
-                toastr["info"]("gespeichert","", { onHidden: function(){
-                  location.reload();
-                }});
+                toastr["info"](lang.saved, "", {
+                  onHidden: function() {
+                    location.reload();
+                  }
+                });
               }).fail(function() {
-                toastr["error"]("speichern fehlgeschlagen");
+                toastr["error"](lang.saveing_failed);
               }).always(function() {
                 $('#customermodal').modal('hide');
               });
@@ -121,9 +123,11 @@
                 url: "/customer/" + id,
                 type: 'DELETE',
                 success: function(result) {
-                  toastr["info"]("gelöscht","", { onHidden: function(){
-                    location.reload();
-                  }});
+                  toastr["info"](lang.deleted, "", {
+                    onHidden: function() {
+                      location.reload();
+                    }
+                  });
                 }
               });
             });

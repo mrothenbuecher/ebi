@@ -1,7 +1,7 @@
 <!-- views/dossier.ejs -->
 <div class="row" style="margin-bottom: 20px;">
   <div class="col-12">
-    <h2 class="float-left">Vorgänge</h2><button style="margin-left: 10px;" class="btn float-left add_dossier"><i class="fas fa-plus"></i></button>
+    <h2 class="float-left"><%= config.lang.dossiers %></h2><button style="margin-left: 10px;" class="btn float-left add_dossier"><i class="fas fa-plus"></i></button>
   </div>
 </div>
 <%  if(dossiers && dossiers.length > 0){ %>
@@ -25,7 +25,7 @@
     <div class="row">
       <div class="col-12">
         <div class="alert alert-primary" role="alert">
-          Es gibt noch keine Vorgänge, du solltest einen Vorgang <a href="#" class="alert-link add_dossier">anlegen.</a>
+          <%- config.lang.info_dossier %>
         </div>
       </div>
     </div>
@@ -42,10 +42,14 @@
             <div class="modal-body">
               <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item">
-                  <a class="nav-link active" data-toggle="tab" href="#dossier-text-tab" role="tab" aria-controls="customer" aria-selected="true">Texte</a>
+                  <a class="nav-link active" data-toggle="tab" href="#dossier-text-tab" role="tab" aria-controls="customer" aria-selected="true">
+                    <%= config.lang.texts %>
+                  </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" data-toggle="tab" href="#dossier-pos-tab" role="tab" aria-controls="dossier" aria-selected="false">Positionen</a>
+                  <a class="nav-link" data-toggle="tab" href="#dossier-pos-tab" role="tab" aria-controls="dossier" aria-selected="false">
+                    <%= config.lang.positions %>
+                  </a>
                 </li>
               </ul>
               <div class="tab-content">
@@ -56,49 +60,49 @@
                       <input type="text" class="data" id="customer_id">
                     </div>
                     <div class="form-group">
-                      <label for="formGroupExampleInput">Vorgangsart</label>
-                      <input type="text" class="form-control data" id="type" placeholder="Angebot / Rechnung">
+                      <label for="formGroupExampleInput"><%= config.lang.dossier_type %></label>
+                      <input type="text" class="form-control data" id="type" placeholder="<%= config.lang.dossier_type %>">
                     </div>
                     <div class="form-group">
-                      <label for="formGroupExampleInput">Kunde</label>
-                      <input type="text" class="form-control data" id="customer" placeholder="Kunde">
+                      <label for="formGroupExampleInput"><%= config.lang.customer %></label>
+                      <input type="text" class="form-control data" id="customer" placeholder="<%= config.lang.customer %>">
                     </div>
                     <div class="form-group">
-                      <label for="formGroupExampleInput">Nummer</label>
-                      <input type="text" class="form-control data" id="number" placeholder="Nummer">
+                      <label for="formGroupExampleInput"><%= config.lang.number %></label>
+                      <input type="text" class="form-control data" id="number" placeholder="<%= config.lang.number %>">
                     </div>
                     <div class="form-group">
-                      <label for="formGroupExampleInput">Datum</label>
-                      <input type="text" class="form-control data" id="date" placeholder="Datum">
+                      <label for="formGroupExampleInput"><%= config.lang.date %></label>
+                      <input type="text" class="form-control data" id="date" placeholder="<%= config.lang.date %>">
                     </div>
                     <div class="form-group">
-                      <label for="formGroupExampleInput">Anfangstext</label>
-                      <textarea rows="5" type="text" class="form-control data" id="starttext" placeholder="Anfangstext"></textarea>
+                      <label for="formGroupExampleInput"><%= config.lang.starttext %></label>
+                      <textarea rows="5" type="text" class="form-control data" id="starttext" placeholder="<%= config.lang.starttext %>"></textarea>
                     </div>
 
                     <div class="form-group">
-                      <label for="formGroupExampleInput">Endtext</label>
-                      <textarea rows="5" type="text" class="form-control data" id="endtext" placeholder="Endtext"></textarea>
+                      <label for="formGroupExampleInput"><%= config.lang.endtext %></label>
+                      <textarea rows="5" type="text" class="form-control data" id="endtext" placeholder="<%= config.lang.endtext %>"></textarea>
                     </div>
                   </form>
                 </div>
                 <div class="tab-pane" id="dossier-pos-tab" role="tabpanel">
                   <div class="row">
                     <div class="col-1">
-                      <h6>Pos.</h6>
+                      <h6><%= config.lang.pos_number %></h6>
                     </div>
                     <div class="col-5">
-                      <h6>Beschreibung</h6>
+                      <h6><%= config.lang.pos_desc %></h6>
                     </div>
                     <div class="col-2">
-                      <h6>Menge</h6>
-                      <h6>Einheit</h6>
+                      <h6><%= config.lang.pos_amount %></h6>
+                      <h6><%= config.lang.pos_unit %></h6>
                     </div>
                     <div class="col-2">
-                      <h6>Preis</h6>
+                      <h6><%= config.lang.pos_price %></h6>
                     </div>
                     <div class="col-2">
-                      <h6>Wert</h6>
+                      <h6><%= config.lang.pos_value %></h6>
                     </div>
                   </div>
                   <div id="dossier-table">
@@ -108,7 +112,7 @@
                       <a href="#" class="btn btn-primary" id="add-row"><i class="far fa-plus-square"></i></a>
                     </div>
                     <div class="offset-6 col-2">
-                      <h6 class="float-right">Summe: </h6>
+                      <h6 class="float-right"><%= config.lang.sum %></h6>
                     </div>
                     <div class="col-2">
                       <input type="text" readonly class="form-control" id="sum">
@@ -116,7 +120,7 @@
                   </div>
                   <div class="row">
                     <div class="offset-8 col-2">
-                      <h6 class="float-right">Mwst.(19 %): </h6>
+                      <h6 class="float-right"><%= config.lang.tax %></h6>
                     </div>
                     <div class="col-2">
                       <input type="text" readonly class="form-control" id="tax">
@@ -124,7 +128,7 @@
                   </div>
                   <div class="row">
                     <div class="offset-8 col-2">
-                      <h6 class="float-right">Gesamt: </h6>
+                      <h6 class="float-right"><%= config.lang.total %></h6>
                     </div>
                     <div class="col-2">
                       <input type="text" readonly class="form-control" id="final">
@@ -199,7 +203,7 @@
                     $(valueField).html("<span>" + formatCurrency(price * amount) + " " + currency + "</span>");
                     sum += price * amount;
                   } else {
-                    $(valueField).html("<span>0 €</span>");
+                    $(valueField).html("<span>0 " + currency + "</span>");
                   }
                 }
               });
@@ -210,14 +214,14 @@
 
             $('.add_dossier').click(function(ev) {
               ev.preventDefault();
-              $('#dossierModalLabel').text("Vorgang anlegen");
+              $('#dossierModalLabel').text(lang.create_dossier);
               resetModal();
               $('#dossiermodal').modal('toggle');
             });
 
             $('.edit_dossier').click(function(ev) {
               ev.preventDefault();
-              $('#dossierModalLabel').text("Kunde ändern");
+              $('#dossierModalLabel').text(lang.edit_dossier);
               resetModal();
               var id = $(this).parent().data("id");
 
@@ -234,7 +238,6 @@
                   }
 
                   $('#dossiermodal').trigger("price-update");
-
                   $('#dossiermodal').modal('toggle');
                 })
                 .fail(function() {
@@ -250,7 +253,7 @@
                 url: "/dossier/" + id,
                 type: 'DELETE',
                 success: function(result) {
-                  toastr["info"]("gelöscht", "", {
+                  toastr["info"](lang.deleted, "", {
                     onHidden: function() {
                       location.reload();
                     }
@@ -282,13 +285,13 @@
 
               dossier["positions"] = positions;
               $.post('/dossier', dossier, function() {}).done(function() {
-                toastr["info"]("gespeichert", "", {
+                toastr["info"](lang.saved, "", {
                   onHidden: function() {
                     location.reload();
                   }
                 });
               }).fail(function() {
-                toastr["error"]("speichern fehlgeschlagen");
+                toastr["error"](lang.saveing_failed);
               }).always(function() {
                 $('#dossiermodal').modal('hide');
               });
