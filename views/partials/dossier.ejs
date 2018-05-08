@@ -1,20 +1,21 @@
 <!-- views/dossier.ejs -->
-<div class="row">
+<div class="row" style="margin-bottom: 20px;">
   <div class="col-12">
-    <h2 class="float-left">Vorgänge</h2><button class="btn btn-default float-left add_dossier">+</button>
+    <h2 class="float-left">Vorgänge</h2><button style="margin-left: 10px;" class="btn float-left add_dossier"><i class="fas fa-plus"></i></button>
   </div>
 </div>
 <%  if(dossiers && dossiers.length > 0){ %>
   <div class="row">
     <%  dossiers.forEach(function(dossier) { %>
-      <div class="col-sm-auto col-md-auto col-lg-auto col-xl-auto">
-        <div class="card" style="width: 18rem;">
+      <div class="col-sm-4 col-md-3">
+        <div class="card">
+          <h5 class="card-header"><%= dossier.type %> <%= dossier.number %></h5>
           <div class="card-body" data-id="<%= dossier._id %>">
-            <h5 class="card-title"><%= dossier.number %></h5>
-            <h6 class="card-subtitle mb-2 text-muted"><%= dossier.date %> <%= dossier.customer %></h6>
-            <a href="#" class="btn btn-primary edit_dossier">ändern</a>
-            <a href="/dossier/print/<%=dossier._id%>" class="btn btn-success print_dossier">drucken</a>
-            <a href="#" class="btn btn-danger delete_dossier">löschen</a>
+            <h5 class="card-title"> <%= dossier.customer %></h5>
+            <h6 class="card-subtitle mb-2 text-muted"><%= dossier.date %></h6>
+            <a href="#" class="btn btn-primary edit_dossier float-left"><i class="fas fa-edit"></i></a>
+            <a style="margin-left: 10px;" href="/dossier/print/<%=dossier._id%>" target="_blank" class="btn btn-success print_dossier float-left"><i class="fas fa-print"></i></a>
+            <a href="#" class="btn btn-danger delete_dossier float-right"><i class="fas fa-trash"></i></a>
           </div>
         </div>
       </div>
@@ -104,7 +105,7 @@
                   </div>
                   <div class="row">
                     <div class="col-2">
-                      <a href="#" class="btn btn-primary" id="add-row">Zeile hinzufügen</a>
+                      <a href="#" class="btn btn-primary" id="add-row"><i class="far fa-plus-square"></i></a>
                     </div>
                     <div class="offset-6 col-2">
                       <h6 class="float-right">Summe: </h6>
@@ -133,8 +134,8 @@
               </div>
             </div>
             <div class="modal-footer">
-              <a href="#" class="btn btn-secondary" style="margin-right: 80px;" data-dismiss="modal">verwerfen</a>
-              <a href="#" class="btn btn-primary" id="save_dossier">speichern</a>
+              <a href="#" class="btn btn-secondary" style="margin-right: 80px;" data-dismiss="modal"><i class="fas fa-undo"></i></a>
+              <a href="#" class="btn btn-primary" id="save_dossier"><i class="far fa-save"></i></a>
             </div>
           </div>
         </div>
@@ -176,36 +177,36 @@
             resetTable();
           }
 
-          function formatCurrency(number){
+          function formatCurrency(number) {
             return parseFloat(Math.round(number * 100) / 100).toFixed(2);
           }
 
           $(document).ready(function() {
 
-              $('#dossiermodal').on("price-update", function(event, arg1){
+            $('#dossiermodal').on("price-update", function(event, arg1) {
 
-                var sum = 0;
-                $('#dossiermodal .pos').each(function(i, val) {
-                  var $row = $(val);
-                  var amountField = $row.find('input[name="amount"]')[0];
-                  var priceField = $row.find('input[name="price"]')[0];
-                  var valueField = $row.find('.value')[0];
+              var sum = 0;
+              $('#dossiermodal .pos').each(function(i, val) {
+                var $row = $(val);
+                var amountField = $row.find('input[name="amount"]')[0];
+                var priceField = $row.find('input[name="price"]')[0];
+                var valueField = $row.find('.value')[0];
 
-                  if(amountField && priceField && valueField){
-                    var price = $(priceField).val();
-                    var amount = $(amountField).val();
-                    if(price && amount){
-                      $(valueField).html("<span>"+formatCurrency(price*amount)+" €</span>");
-                      sum += price*amount;
-                    }else{
-                      $(valueField).html("<span>0 €</span>");
-                    }
+                if (amountField && priceField && valueField) {
+                  var price = $(priceField).val();
+                  var amount = $(amountField).val();
+                  if (price && amount) {
+                    $(valueField).html("<span>" + formatCurrency(price * amount) + " " + currency + "</span>");
+                    sum += price * amount;
+                  } else {
+                    $(valueField).html("<span>0 €</span>");
                   }
-                });
-                $('#sum').val(formatCurrency(sum)+ " €");
-                $('#tax').val(formatCurrency((sum*1.19)-sum)+ " €");
-                $('#final').val(formatCurrency(sum*1.19)+ " €");
+                }
               });
+              $('#sum').val(formatCurrency(sum) + " " + currency);
+              $('#tax').val(formatCurrency(compute_tax(sum)) + " " + currency);
+              $('#final').val(formatCurrency(sum + compute_tax(sum)) + " " + currency);
+            });
 
             $('.add_dossier').click(function(ev) {
               ev.preventDefault();
@@ -222,12 +223,12 @@
 
               $.getJSON("/dossier/" + id, function(data) {
                   $('#dossiermodal :input.data').each(function(i, val) {
-                      $(val).val(data[$(val).attr("id")]);
+                    $(val).val(data[$(val).attr("id")]);
                   });
                   // table reset
-                  if(data.positions && data.positions.length > 0){
+                  if (data.positions && data.positions.length > 0) {
                     $('#dossier-table').html("");
-                    $.each(data.positions, function(i, val){
+                    $.each(data.positions, function(i, val) {
                       addRow(val);
                     });
                   }
@@ -249,7 +250,11 @@
                 url: "/dossier/" + id,
                 type: 'DELETE',
                 success: function(result) {
-                  toastr["info"]("gelöscht");
+                  toastr["info"]("gelöscht", "", {
+                    onHidden: function() {
+                      location.reload();
+                    }
+                  });
                 }
               });
             });
@@ -268,7 +273,7 @@
                 var row = $(val);
                 var data = {};
                 // get all input field from current row
-                row.find(":input").each(function(j, foo){
+                row.find(":input").each(function(j, foo) {
                   data[$(foo).attr("name")] = $(foo).val();
                 });
                 positions.push(data);
@@ -277,7 +282,11 @@
 
               dossier["positions"] = positions;
               $.post('/dossier', dossier, function() {}).done(function() {
-                toastr["info"]("gespeichert");
+                toastr["info"]("gespeichert", "", {
+                  onHidden: function() {
+                    location.reload();
+                  }
+                });
               }).fail(function() {
                 toastr["error"]("speichern fehlgeschlagen");
               }).always(function() {
@@ -303,10 +312,10 @@
               }
             });
 
-            $('#customer').on('typeahead:selected', function (e, customer) {
-              if(!customer){
+            $('#customer').on('typeahead:selected', function(e, customer) {
+              if (!customer) {
                 $('#customer_id').val("");
-              }else{
+              } else {
                 $('#customer_id').val(customer._id);
               }
             });

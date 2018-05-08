@@ -179,9 +179,10 @@ function startServer() {
       response.endtext_html = addLineBreaks(response.endtext);
 
       response.sum = formatCurrency(sum);
-      response.tax = formatCurrency((sum * 1.19) - sum);
-      response.final = formatCurrency((sum * 1.19));
+      response.tax = formatCurrency(config.tax(sum));
+      response.final = formatCurrency(sum + config.tax(sum));
 
+      response.currency = config.currency;
       response.custom_data = config.custom_data;
 
       var invoice_template = fs.readFileSync(__dirname + "/public/mst/invoice.mst", "utf8");

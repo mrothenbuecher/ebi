@@ -18,6 +18,10 @@
       width: 100%;
     }
 
+    td {
+      padding: 6px;
+    }
+
     #pageFooter {
       font-size: 8pt;
     }
@@ -61,17 +65,17 @@
       <tr>
         <td colspan="3"></td>
         <td class="border-top" style="text-align:right"><b>Nettobetrag:</b></td>
-        <td class="border-top" style="text-align:right">{{sum}} €</td>
+        <td class="border-top" style="text-align:right">{{sum}} {{currency}}</td>
       </tr>
       <tr>
         <td colspan="3"></td>
         <td class="border-bottom" style="text-align:right">MwSt.(19%):</td>
-        <td class="border-bottom" style="text-align:right">{{tax}} €</td>
+        <td class="border-bottom" style="text-align:right">{{tax}} {{currency}}</td>
       </tr>
       <tr>
         <td colspan="3"></td>
         <td class="border-bottom" style="text-align:right"><b>Endbetrag:</b></td>
-        <td class="border-bottom" style="text-align:right">{{final}} €</td>
+        <td class="border-bottom" style="text-align:right">{{final}} {{currency}}</td>
       </tr>
     </tfoot>
     <tbody>
@@ -80,8 +84,8 @@
           <td style="text-align:left">{{pos}}</td>
           <td style="text-align:left">{{{desc_html}}}</td>
           <td style="text-align:center">{{amount}} {{unit}}</td>
-          <td style="text-align:right">{{price}} €</td>
-          <td style="text-align:right">{{sum}} €</td>
+          <td style="text-align:right">{{price}} {{currency}}</td>
+          <td style="text-align:right">{{sum}} {{currency}}</td>
         </tr>
       {{/positions}}
     </tbody>

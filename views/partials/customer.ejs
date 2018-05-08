@@ -1,19 +1,19 @@
 <!-- views/customer.ejs -->
-<div class="row">
+<div class="row" style="margin-bottom: 20px;">
   <div class="col-12">
-    <h2 class="float-left">Kunden</h2><button class="btn btn-default float-left add_customer">+</button>
+    <h2 class="float-left">Kunden</h2><button style="margin-left: 10px;" class="btn float-left add_customer"><i class="fas fa-plus"></i></button>
   </div>
 </div>
 <%  if(customers && customers.length > 0){ %>
   <div class="row">
     <%  customers.forEach(function(customer) { %>
       <div class="col-sm-auto col-md-auto col-lg-auto col-xl-auto">
-        <div class="card" style="width: 18rem;">
+        <div class="card">
+          <h5 class="card-header"><%= customer.name %></h5>
           <div class="card-body" data-id="<%= customer._id %>">
-            <h5 class="card-title"><%= customer.name %></h5>
             <h6 class="card-subtitle mb-2 text-muted"><%= customer.street %> <%= customer.town %></h6>
-            <a href="#" class="btn btn-primary edit_customer">ändern</a>
-            <a href="#" class="btn btn-danger delete_customer">löschen</a>
+            <a href="#" class="btn btn-primary edit_customer float-left"><i class="fas fa-edit"></i></a>
+            <a href="#" class="btn btn-danger delete_customer float-right"><i class="fas fa-trash"></i></a>
           </div>
         </div>
       </div>
@@ -61,8 +61,8 @@
               </form>
             </div>
             <div class="modal-footer">
-              <a href="#" class="btn btn-secondary" data-dismiss="modal">verwerfen</a>
-              <a href="#" id="save_customer" class="btn btn-primary">speichern</a>
+              <a href="#" class="btn btn-secondary" style="margin-right: 80px;" data-dismiss="modal"><i class="fas fa-undo"></i></a>
+              <a href="#" id="save_customer" class="btn btn-primary"><i class="far fa-save"></i></a>
             </div>
           </div>
         </div>
@@ -104,7 +104,9 @@
                 customer[$(val).attr("id")] = $(val).val();
               });
               $.post('/customer', customer, function() {}).done(function() {
-                toastr["info"]("gespeichert");
+                toastr["info"]("gespeichert","", { onHidden: function(){
+                  location.reload();
+                }});
               }).fail(function() {
                 toastr["error"]("speichern fehlgeschlagen");
               }).always(function() {
@@ -119,7 +121,9 @@
                 url: "/customer/" + id,
                 type: 'DELETE',
                 success: function(result) {
-                  toastr["info"]("gelöscht");
+                  toastr["info"]("gelöscht","", { onHidden: function(){
+                    location.reload();
+                  }});
                 }
               });
             });
