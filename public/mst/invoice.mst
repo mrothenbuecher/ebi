@@ -6,40 +6,72 @@
   <meta charset="utf-8">
   <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
   <style>
-   * {
-     font-family: 'Roboto Slab', serif;
-   }
+    * {
+      font-family: 'Roboto Slab', serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    table {
+      border-spacing: 0;
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    #pageFooter {
+      font-size: 8pt;
+    }
+
+    .border-bottom {
+      border-bottom: 2px solid black;
+    }
+
+    .border-top {
+      border-top: 2px solid black;
+    }
+
+    .spacer {
+      margin-top: 15px;
+      clear: both;
+    }
   </style>
 </head>
 
 <body>
-
-  <h1 style="float:left;display:inline;">{{type}} {{number}}</h1>
-  <div style="float:right;display:inline;">{{date}}</div>
-  <div style="clear:both;"></div>
+  <div style="margin-top: 80px;clear:both;"></div>
+  <div style="float:left;display:inline; width: 50%;">
+    <h1>{{type}} {{number}}</h1>
+  </div>
+  <div style="float:right;display:inline;width: 49%;text-align:right;">
+    <b>Datum:</b> {{date}}
+  </div>
+  <div style="margin-bottom: 50px;clear:both;"></div>
   <p>{{{starttext_html}}}</p>
-  <table style="width: 100%;">
+  <table class="spacer">
     <thead>
       <tr>
-        <th style="text-align:left">Pos.</th>
-        <th style="text-align:left">Beschreibung</th>
-        <th style="text-align:center">Menge</th>
-        <th style="text-align:right">Preis</th>
-        <th style="text-align:right">Wert</th>
+        <th class="border-bottom" style="text-align:left">Pos.</th>
+        <th class="border-bottom" style="text-align:left">Beschreibung</th>
+        <th class="border-bottom" style="text-align:center">Menge</th>
+        <th class="border-bottom" style="text-align:right">Preis</th>
+        <th class="border-bottom" style="text-align:right">Wert</th>
       </tr>
     </thead>
     <tfoot>
       <tr>
-        <td colspan="4" style="text-align:right">Summe: </td>
-        <td style="text-align:right">{{sum}} €</td>
+        <td colspan="3"></td>
+        <td class="border-top" style="text-align:right"><b>Nettobetrag:</b></td>
+        <td class="border-top" style="text-align:right">{{sum}} €</td>
       </tr>
       <tr>
-        <td colspan="4" style="text-align:right">MwSt.(19%): </td>
-        <td style="text-align:right">{{tax}} €</td>
+        <td colspan="3"></td>
+        <td class="border-bottom" style="text-align:right">MwSt.(19%):</td>
+        <td class="border-bottom" style="text-align:right">{{tax}} €</td>
       </tr>
       <tr>
-        <td colspan="4" style="text-align:right">Gesamtwert: </td>
-        <td style="text-align:right">{{final}} €</td>
+        <td colspan="3"></td>
+        <td class="border-bottom" style="text-align:right"><b>Endbetrag:</b></td>
+        <td class="border-bottom" style="text-align:right">{{final}} €</td>
       </tr>
     </tfoot>
     <tbody>
@@ -54,16 +86,41 @@
       {{/positions}}
     </tbody>
   </table>
-  <div style="clear:both;"></div>
+  <div class="spacer"></div>
   <p>{{{endtext_html}}}</p>
-  <div style="clear:both;"></div>
-  <p>Mit freundlichen Gr&uuml;&szlig;en<br/><br/><br/><br/><br/>Eberhard Rothenb&uuml;cher</p>
+  <div class="spacer"></div>
+  <p>Mit freundlichen Gr&uuml;&szlig;en,<br/>{{custom_data.name}}</p>
   <div id="pageHeader-first">
-    {{customer.name}}
+    <p style="font-size: 8pt; text-decoration: underline;margin-bottom: 15px;">
+      {{custom_data.company}} - {{custom_data.street}} - {{custom_data.zip}} {{custom_data.town}}
+    </p>
+    <div style="float: left;display:inline;">
+      <p>{{customer.name}}</p>
+      <p>
+        {{customer.street}} <br/> {{customer.zip}} {{customer.town}}<br/>
+      </p>
+    </div>
+    <div style="float: right;display:inline;">
+      <p><b>{{custom_data.company}}</b></p>
+      <p>
+        {{custom_data.street}} <br/> {{custom_data.zip}} {{custom_data.town}}
+      </p>
+      <p style="margin-top: 15px;">
+        <b>Telefon:</b>{{custom_data.phone}} <br/>
+        <b>Fax:</b>{{custom_data.fax}}
+      </p>
+    </div>
   </div>
   <div id="pageFooter">
-    <p>IBAN: </p>
-    <p>BIC: </p>
+    <div style="width: 50%; float:left; display:inline;">
+      <p>Bank: {{custom_data.bank}}</p>
+      <p>IBAN: {{custom_data.iban}}</p>
+    </div>
+    <div style="width: 50%; float:right; display:inline;">
+      <p>
+        {{{custom_data.footertext_html}}}
+      </p>
+    </div>
   </div>
 </body>
 
