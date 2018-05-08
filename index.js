@@ -185,7 +185,7 @@ function startServer() {
       response.currency = config.currency;
       response.custom_data = config.custom_data;
 
-      var invoice_template = fs.readFileSync(__dirname + "/public/mst/invoice.mst", "utf8");
+      var invoice_template = fs.readFileSync(__dirname + "/public/mst/dossier.mst", "utf8");
 
       var html = mustache.render(invoice_template, response);
 

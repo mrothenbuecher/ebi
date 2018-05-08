@@ -99,6 +99,9 @@
       {{custom_data.company}} - {{custom_data.street}} - {{custom_data.zip}} {{custom_data.town}}
     </p>
     <div style="float: left;display:inline;">
+      {{#customer.company}}
+      <p><b>{{customer.company}}</b></p>
+      {{/customer.company}}
       <p>{{customer.name}}</p>
       <p>
         {{customer.street}} <br/> {{customer.zip}} {{customer.town}}<br/>
