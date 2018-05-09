@@ -13,6 +13,11 @@ var bodyParser = require('body-parser');
 var session = require('express-session')
 var favicon = require('serve-favicon')
 
+
+if (!fs.existsSync(__dirname + '/db')){
+    fs.mkdirSync(__dirname + '/db');
+}
+
 // data storage
 var db = require('diskdb');
 db.connect(__dirname + '/db', ['customers', 'dossiers', 'settings']);
