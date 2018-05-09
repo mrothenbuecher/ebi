@@ -30,6 +30,6 @@ The config file is located in the main directory. (`config.js`)
 
 ### printing
 
-See [basics](###basics) and there `custom_data` and `print`.
+See [basics](#basics) and there `custom_data` and `print`.
 
 If you want to change the layout edit `public/mst/dossier.mst`.
