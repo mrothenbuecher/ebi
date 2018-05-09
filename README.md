@@ -1,5 +1,7 @@
 # ebi
 
+[see demo](https://ebi-demo.herokuapp.com/)
+
 ## install
 
 1. download repo
