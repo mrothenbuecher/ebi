@@ -4,10 +4,9 @@
 
 <head>
   <meta charset="utf-8">
-  <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
   <style>
     * {
-      font-family: 'Roboto Slab', serif;
+      font-family: serif;
       margin: 0;
       padding: 0;
     }
