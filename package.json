@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node index.js",
+    "exec": "./node_modules/.bin/forever start index.js",
+    "stop_exec": "./node_modules/.bin/forever stop index.js"
   },
   "keywords": [
     "ebi"
@@ -18,6 +20,7 @@
     "ejs": "^2.5.9",
     "express": "^4.16.3",
     "express-session": "^1.15.6",
+    "forever": "^0.15.3",
     "html-pdf": "^2.2.0",
     "mustache": "^2.3.0",
     "serve-favicon": "^2.5.0"
