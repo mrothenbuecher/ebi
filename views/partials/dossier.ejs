@@ -308,9 +308,17 @@
             }, {
               name: 'brands',
               display: 'name',
+	            limit: 10,
               source: function(query, syncResults, asyncResults) {
                 $.get('/customers', function(data) {
-                  asyncResults(data);
+	                var foo = [];
+	                query = query.toLowerCase();
+		              $.each(data, function(i, val){
+			              if(val.name.toLowerCase().includes(query) || val.company.toLowerCase().includes(query) ){
+				              foo.push(val);
+			              }
+		              });
+                  asyncResults(foo);
                 });
               }
             });
