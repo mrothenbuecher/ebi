@@ -7,7 +7,7 @@
 <%  if(customers && customers.length > 0){ %>
   <div class="row">
     <%  customers.forEach(function(customer) { %>
-      <div class="col-sm-auto col-md-auto col-lg-auto col-xl-auto">
+      <div class="col-sm-auto col-md-auto col-lg-auto col-xl-auto customer-card">
         <div class="card">
           <h5 class="card-header"><%= customer.name %></h5>
           <div class="card-body" data-id="<%= customer._id %>">
