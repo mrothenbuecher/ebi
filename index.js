@@ -74,7 +74,15 @@ function startServer() {
       data.dossiers = db.dossiers.find();
       data.settings = db.settings.find();
       data.config = config;
+      data.session = req.session;
       res.render('main', data);
+    });
+
+    // set current link
+    app.post('/link/(:link)', function(req, res) {
+      req.session.link = req.params.link;
+
+      return res.send(JSON.stringify(req.session));
     });
 
     // customer
@@ -95,7 +103,7 @@ function startServer() {
 
     app.get('/customer/(:id)', function(req, res) {
       if (!req.params.id) {
-        return res.status(400).send('not id was given');
+        return res.status(400).send('no id was given');
       }
       var response = db.customers.findOne({
         _id: req.params.id
@@ -112,7 +120,7 @@ function startServer() {
 
     app.delete('/customer/(:id)', function(req, res) {
       if (!req.params.id) {
-        return res.status(400).send('not id was given');
+        return res.status(400).send('no id was given');
       }
       var response = db.customers.remove({
         _id: req.params.id
@@ -137,9 +145,26 @@ function startServer() {
       return res.send(JSON.stringify(response));
     });
 
+    // dossier
+    app.post('/dossier/copy/(:id)', function(req, res) {
+      if (!req.params.id) {
+        return res.status(400).send('no id was given');
+      }
+
+      var dossier = db.dossiers.findOne({
+        _id: req.params.id
+      });
+
+      delete dossier['_id'];
+      response = db.dossiers.save(dossier);
+
+      res.setHeader('Content-Type', 'application/json');
+      return res.send(JSON.stringify(response));
+    });
+
     app.get('/dossier/(:id)', function(req, res) {
       if (!req.params.id) {
-        return res.status(400).send('not id was given');
+        return res.status(400).send('no id was given');
       }
       var response = db.dossiers.findOne({
         _id: req.params.id
@@ -150,7 +175,7 @@ function startServer() {
 
     app.delete('/dossier/(:id)', function(req, res) {
       if (!req.params.id) {
-        return res.status(400).send('not id was given');
+        return res.status(400).send('no id was given');
       }
       var response = db.dossiers.remove({
         _id: req.params.id
@@ -161,7 +186,7 @@ function startServer() {
 
     app.get('/dossier/print/(:id)', function(req, res) {
       if (!req.params.id) {
-        return res.status(400).send('not id was given');
+        return res.status(400).send('no id was given');
       }
       var response = db.dossiers.findOne({
         _id: req.params.id

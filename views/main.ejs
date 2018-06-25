@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="/css/fontawesome.css">
   <link href="/css/typeaheadjs.css" rel="stylesheet">
   <link href="/css/style.css" rel="stylesheet">
-  <script src="/js/jquery-3.2.1.min.js" ></script>
+  <script src="/js/jquery-3.2.1.min.js"></script>
 </head>
 
 <body>
@@ -26,46 +26,101 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
+            <%  if(session.link == "customer"){ %>
             <li class="nav-item">
-              <a class="nav-link menu-link active" href="#customer-tab" ><%= config.lang.customers %></a>
+              <a class="nav-link menu-link active" data-link="customer" href="#customer-tab">
+                <%= config.lang.customers %>
+              </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link menu-link" href="#dossier-tab"><%= config.lang.dossiers %></a>
+              <a class="nav-link menu-link" data-link="dossier" href="#dossier-tab">
+                <%= config.lang.dossiers %>
+              </a>
             </li>
+            <%  } else{ %>
+              <li class="nav-item">
+                <a class="nav-link menu-link " data-link="customer" href="#customer-tab">
+                  <%= config.lang.customers %>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link menu-link active" data-link="dossier" href="#dossier-tab">
+                  <%= config.lang.dossiers %>
+                </a>
+              </li>
+            <%  } %>
           </ul>
         </div>
       </div>
     </nav>
     <div class="container-fluid" style="margin-top: 65px;">
+      <%  if(session.link == "customer"){ %>
       <div class="content-pane" id="customer-tab">
         <%- include ./partials/customer.ejs %>
       </div>
       <div class="content-pane" style="display:none;" id="dossier-tab">
         <%- include ./partials/dossier.ejs %>
       </div>
-  </div>
+      <%  } else{ %>
+        <div class="content-pane" style="display:none;" id="customer-tab">
+          <%- include ./partials/customer.ejs %>
+        </div>
+        <div class="content-pane" id="dossier-tab">
+          <%- include ./partials/dossier.ejs %>
+        </div>
+      <%  } %>
+    </div>
   </main>
 
-  <script src="/js/popper.min.js" ></script>
-  <script src="/js/bootstrap.min.js" ></script>
+  <script src="/js/popper.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
   <script src="/js/toastr.min.js"></script>
   <script src="/js/typeahead.bundle.js"></script>
   <script src="/js/mustache.min.js"></script>
   <script>
-
     var compute_tax = <%= config.tax %>;
+
+    var session = <%- JSON.stringify(session) %>;
+    console.log(session);
+
     var currency = "<%= config.currency %>";
 
     var lang = <%- JSON.stringify(config.lang) %>;
 
+    toastr.options = {
+      "closeButton": true,
+      "debug": false,
+      "newestOnTop": true,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "500",
+      "timeOut": "3000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    };
+
     $(document).ready(function() {
-      $('.menu-link').click(function(ev){
+      $('.menu-link').click(function(ev) {
         ev.preventDefault();
         $this = $(this);
         $('.menu-link').removeClass("active");
         $this.addClass("active");
         $('.content-pane').hide();
         $($this.attr("href")).show();
+
+        $.post('/link/' + $this.data("link")).done(function() {
+          console.log("link has been set");
+        }).fail(function() {
+          console.error("failed to set link");
+          //toastr["error"](lang.copied_failed);
+        }).always(function() {});
+
       });
     });
   </script>

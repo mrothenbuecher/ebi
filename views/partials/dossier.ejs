@@ -7,13 +7,14 @@
 <%  if(dossiers && dossiers.length > 0){ %>
   <div class="row">
     <%  dossiers.forEach(function(dossier) { %>
-      <div class="col-sm-4 col-md-3">
+      <div class="col-sm-4 col-md-3 dossier-card">
         <div class="card">
           <h5 class="card-header"><%= dossier.type %> <%= dossier.number %></h5>
           <div class="card-body" data-id="<%= dossier._id %>">
             <h5 class="card-title"> <%= dossier.customer %></h5>
             <h6 class="card-subtitle mb-2 text-muted"><%= dossier.date %></h6>
             <a href="#" class="btn btn-primary edit_dossier float-left"><i class="fas fa-edit"></i></a>
+            <a style="margin-left: 10px;" href="#" class="btn btn-secondary copy_dossier float-left"><i class="fas fa-copy"></i></a>
             <a style="margin-left: 10px;" href="/dossier/print/<%=dossier._id%>" target="_blank" class="btn btn-success print_dossier float-left"><i class="fas fa-print"></i></a>
             <a href="#" class="btn btn-danger delete_dossier float-right"><i class="fas fa-trash"></i></a>
           </div>
@@ -246,6 +247,24 @@
                 .always(function() {});
             });
 
+            $('.copy_dossier').click(function(ev) {
+              ev.preventDefault();
+              var $this = $(this);
+              $this.prop("disabled",true);
+              $('#dossierModalLabel').text(lang.edit_dossier);
+              resetModal();
+              var id = $(this).parent().data("id");
+              $.post('/dossier/copy/' + id).done(function() {
+                toastr["info"](lang.copied, "", {
+                  onHidden: function() {
+                    location.reload();
+                  }
+                });
+              }).fail(function() {
+                toastr["error"](lang.copied_failed);
+              }).always(function() {});
+            });
+
             $('.delete_dossier').click(function(ev) {
               ev.preventDefault();
               var id = $(this).parent().data("id");
@@ -308,16 +327,16 @@
             }, {
               name: 'brands',
               display: 'name',
-	            limit: 10,
+              limit: 10,
               source: function(query, syncResults, asyncResults) {
                 $.get('/customers', function(data) {
-	                var foo = [];
-	                query = query.toLowerCase();
-		              $.each(data, function(i, val){
-			              if(val.name.toLowerCase().includes(query) || val.company.toLowerCase().includes(query) ){
-				              foo.push(val);
-			              }
-		              });
+                  var foo = [];
+                  query = query.toLowerCase();
+                  $.each(data, function(i, val) {
+                    if (val.name.toLowerCase().includes(query) || val.company.toLowerCase().includes(query)) {
+                      foo.push(val);
+                    }
+                  });
                   asyncResults(foo);
                 });
               }
