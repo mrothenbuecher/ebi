@@ -154,6 +154,11 @@
           });
 
           function addRow(data) {
+
+            if(!('pos' in data)){
+              data.pos = $('#dossier-table').children().length+1;
+            }
+
             var rendered = Mustache.render(template_row, data);
             var foo = $(rendered);
             foo.find('.remove-row').click(function() {
